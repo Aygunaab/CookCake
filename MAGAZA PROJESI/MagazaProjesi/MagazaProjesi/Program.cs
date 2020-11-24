@@ -12,6 +12,7 @@ namespace MagazaProjesi
 
         static void Main(string[] args)
         {
+
             Product product = new Product();
 
             Load(product);
@@ -24,7 +25,7 @@ namespace MagazaProjesi
 
             Console.WriteLine("Dogru secim edin");
 
-            Console.WriteLine("*******************************************Eldorado marketine xos gelmisiniz*******************************************\n\n\n");
+            Console.WriteLine("*******************************************CakeCook sirinler magazasina xos gelmisiniz*******************************************\n\n\n");
             Console.WriteLine("=============================================");
             Console.WriteLine("== 1.Mehsullar uzerinde emeliyyat aparmaq. ==");
             Console.WriteLine("== 2.Satislar uzerinde emeliyyat aparmaq.  ==");
@@ -136,7 +137,7 @@ namespace MagazaProjesi
                     {
                         product.Products.ForEach(prod =>
                         {
-                            Console.WriteLine(prod.codeProduct + " " + prod.NameProduct + " " + prod.PriceProduct + " " + prod.countProduct);
+                            Console.WriteLine(prod.codeProduct + " " + prod.NameProduct + " " + prod.PriceProduct + " " + prod.countProduct + " " + prod.category);
 
                         });
                         Console.ReadLine();
@@ -156,48 +157,33 @@ namespace MagazaProjesi
                         Category cate = ((Category)int.Parse(Console.ReadLine()));
 
 
-                        if (product.Products.Exists(p => p.category == cate))
-                        {
-                            product.Products.ForEach(prod =>
-                            {
-                                Console.WriteLine(prod.category);
-                            });
-                            Console.ReadLine();
-                            Load(product);
 
-                        }
-                        else
+                        product.Products.ForEach(prod =>
                         {
-                            Console.WriteLine("Stokda bu kateqoriyaya aid mehsul tapilmadi ");
-                        }
+                            if (prod.category == cate)
+                                Console.WriteLine(prod.codeProduct + " " + prod.NameProduct + " " + prod.PriceProduct + " " + prod.countProduct + " " + prod.category);
+
+                        });
+                        Console.ReadLine();
+                        Load(product);
+
                     }
                     break;
 
                 case ("1.6"):
                     {
-                        Console.WriteLine("Gostermek istediyiniz mehsullarin vaxtlarini daxil edin");
-                        int x = Convert.ToInt32(Console.ReadLine());
-                        int y = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Gostermek istediyiniz mehsullarin qiymetlerin daxil edin");
+                        float FirstPrice = float.Parse(Console.ReadLine());
+                        float SecondPrice = float.Parse(Console.ReadLine());
 
-                        if (product.Products.Exists(p => p.PriceProduct == x && p.PriceProduct == y))
+                        product.Products.ForEach(prod =>
                         {
-                            for (int i = x; i < y; i++)
-                            {
-                                product.Products.ForEach(prod =>
-                                {
-                                    Console.WriteLine(prod.codeProduct + " " + prod.NameProduct + " " + prod.PriceProduct + " " + prod.countProduct);
+                            if (prod.PriceProduct >= FirstPrice && prod.PriceProduct <= SecondPrice)
+                                Console.WriteLine(prod.codeProduct + " " + prod.NameProduct + " " + prod.PriceProduct + " " + prod.countProduct + " " + prod.category);
 
-                                });
-                                Console.ReadLine();
-                                Load(product);
-
-                            }
-
-                        }
-                        else
-                        {
-                            Console.WriteLine("Daxil etdiyiniz qiymet araliginda hec bir mehsul tapilmadi");
-                        }
+                        });
+                        Console.ReadLine();
+                        Load(product);
                     }
                     break;
                 case "1.7":
@@ -206,24 +192,15 @@ namespace MagazaProjesi
                         string search = Console.ReadLine();
                         search = search.ToLower();
 
-                        if (product.Products.Exists(p => p.NameProduct.Contains(search)) || product.Products.Exists(p => p.NameProduct.Contains(search = search.ToUpper())))
+                        product.Products.ForEach(prod =>
                         {
-                            for (int i = 0; i <= search.Length; i++)
-                            {
-                                product.Products.ForEach(prod =>
-                                {
-                                    Console.WriteLine(prod.codeProduct + " " + prod.NameProduct + " " + prod.PriceProduct + " " + prod.countProduct);
+                            if (prod.NameProduct.ToLower().Contains(search))
+                                Console.WriteLine(prod.codeProduct + " " + prod.NameProduct + " " + prod.PriceProduct + " " + prod.countProduct + " " + prod.category);
 
-                                });
-                                Console.ReadLine();
-                                Load(product);
+                        });
+                        Console.ReadLine();
+                        Load(product);
 
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Bu adda mehsul tapilmadi");
-                        }
                         break;
                     }
             }
@@ -270,7 +247,7 @@ namespace MagazaProjesi
                         {
                             Console.WriteLine("Daxil etdiyiniz koda mexsus mehsul yoxdur");
                         }
-
+                        Load(product);
                     }
                     break;
                 case ("1.2.3"):
@@ -289,6 +266,7 @@ namespace MagazaProjesi
                             Console.WriteLine("Daxil etdiyiniz koda mexsus mehsul yoxdur");
                         }
                     }
+                    Load(product);
                     break;
                 case ("1.2.4"):
                     {
@@ -305,6 +283,7 @@ namespace MagazaProjesi
                         {
                             Console.WriteLine("Daxil etdiyiniz koda mexsus mehsul yoxdur");
                         }
+                        Load(product);
                     }
                     break;
                 case ("1.2.5"):
@@ -314,7 +293,7 @@ namespace MagazaProjesi
                         if (product.Products.Exists(p => p.codeProduct == cod))
                         {
                             Console.WriteLine("Yeni kateqoriyani daxil edin: ");
-                            Category category= (Category)int.Parse(Console.ReadLine());
+                            Category category = (Category)int.Parse(Console.ReadLine());
                             product.ChangeProductCategory(cod, category);
                             Console.WriteLine("Mehsulun sayi deyisildi:", product.ChangeCategory(cod));
                         }
@@ -322,10 +301,32 @@ namespace MagazaProjesi
                         {
                             Console.WriteLine("Daxil etdiyiniz koda mexsus mehsul yoxdur");
                         }
+                        Load(product);
                     }
                     break;
-                    
-                   
+            }
+            switch (secim)
+            {
+                case ("2.1"):
+                    {
+                        int no, count;
+                        Product product1;
+                        Console.WriteLine("Mehsulun kodunu daxil edin");
+                        string cod = Console.ReadLine();
+                        if (product.Products.Exists(p => p.codeProduct == cod))
+                        {
+                            Console.WriteLine("Bu produktun satis sayini daxil edin");
+                            count = Convert.ToInt32(Console.ReadLine());
+                            product.Addsale(product, count);
+                            Load(product);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Daxil etdiyiniz koda mexsus stokda mehsul yoxdur.\n Melumatlari duzgun yazdiginizdan emin olun");
+                        }
+
+                    }
+                    break;
             }
         }
     }

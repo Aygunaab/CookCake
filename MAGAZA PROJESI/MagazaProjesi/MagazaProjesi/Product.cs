@@ -20,7 +20,20 @@ namespace MagazaProjesi
 
 
         public List<Product> Products = new List<Product>();
+        private object count;
 
+        public Product(string nameProduct, float priceProduct, object count, string codeProduct, Category category)
+        {
+            NameProduct = nameProduct;
+            PriceProduct = priceProduct;
+            this.count = count;
+            this.codeProduct = codeProduct;
+            this.category = category;
+        }
+
+        public Product()
+        {
+        }
 
         public void AddNewProduct(string _codeProduct, string _nameProduct, float _priceProduct, float _countProduct, Category _category)
         {
@@ -119,6 +132,63 @@ namespace MagazaProjesi
             Category categories = product.category;
             return categories;
         }
-       
+        List<Sales> salelist = new List<Sales>();
+        public void Addsale(Product products, int count)
+        {
+
+            Product product = new Product(products.NameProduct, products.PriceProduct, products.countProduct, products.codeProduct, products.category);
+            if (count > 0 && Products.Exists(p => p.codeProduct == product.codeProduct))
+            {
+                SaleItem salesItems = new SaleItem(product) { Count = count };
+                List<SaleItem> salesItemsList = new List<SaleItem>();
+                salesItemsList.Add(salesItems);
+                Sales sale = new Sales(salesItemsList) { SaleItems = salesItemsList, TotalAmount = product.PriceProduct * count };
+                salelist.Add(sale);
+                products.countProduct = products.countProduct - count;
+
+
+            }
+        }
+
+        List<SaleItem> SalesitemList = new List<SaleItem>();
+        public void AddItem(float _nom, int count, Product _product)
+        {
+            SaleItem sale = new SaleItem();
+            _nom++;
+            sale.Count = count;
+            sale.Products = _product;
+
+            SalesitemList.Add(sale);
+        }
+
+        public static Category CategorySetter(string category)
+        {
+
+            string categ = category;
+            Category CategoryEnum = (Category)Convert.ToInt32(category);
+            switch (categ)
+            {
+                case "1":
+                    CategoryEnum = Category.CAKES;
+                    break;
+                case "2":
+                    CategoryEnum = Category.COOKIES;
+                    break;
+                case "3":
+                    CategoryEnum = Category.ECLAIRS;
+                    break;
+                case "4":
+                    CategoryEnum = Category.NATIONALSWEETS;
+                    break;
+                case "5":
+                    CategoryEnum = Category.PIES;
+                    break;
+
+                    break;
+                default:
+                    break;
+            }
+            return CategoryEnum;
+        }
     }
-    }
+}

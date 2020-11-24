@@ -11,7 +11,7 @@ namespace MagazaProjesi
     {
         private static int _totalNo;
         private int _no;
-        public int No { get => _no; }
+        public float No { get => _no; }
         public double TotalAmount { get; set; }
         public List<SaleItem> SaleItems { get; set; }
         public DateTime SaleDate { get; set; }
@@ -29,6 +29,10 @@ namespace MagazaProjesi
             {
                 TotalAmount += item.Count * item.Products.PriceProduct;
             }
+        }
+
+        public Sales()
+        {
         }
     }
 }

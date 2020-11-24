@@ -10,19 +10,22 @@ namespace MagazaProjesi
 {
     class SaleItem
     {
-        private static int _totalNo;
-        private int _no { get; set; }
-        public int No { get => _no; }
-        public Product Products { get; set; }
-        public int Count { get; set; }
+       public float _totalNo { get; set; }
+       public float No { get; set; }
+       public Product Products { get; set; }
+       public int Count { get; set; }
 
         public SaleItem(Product product)
         {
 
             _totalNo++;
-            _no = _totalNo - 1;
+            No = _totalNo - 1;
 
             this.Products = product;
+        }
+
+        public SaleItem()
+        {
         }
     }
 }
